@@ -9,11 +9,12 @@ class Solution {
 public:
     char findTheDifference(string s, string t) {
         unsigned int buffer = 0;
-        for (char ch : s){
-            buffer ^= (int)ch;
+        int i = 0;
+        for (int i = 0; i < s.size(); i++){
+            buffer ^= s.at(i);
         }
-        for (char ch : t){
-            buffer ^= (int) ch;
+        for (int i = 0; i < t.size(); i++){
+            buffer ^= t.at(i);
         }
         return (char) buffer;
     }
