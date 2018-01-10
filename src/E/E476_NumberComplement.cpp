@@ -8,6 +8,6 @@ public:
         unsigned int mask = 1;
         while (mask <= num) mask <<= 1;
         mask -= 1;
-        return ~num & mask;
+        return num ^ mask;
     }
 };
