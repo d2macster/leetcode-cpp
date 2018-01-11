@@ -8,21 +8,11 @@ using std::vector;
 class Solution {
 public:
     vector<int> countBits(int num) {
-        vector<int> result(num + 1);
-        int cache[num + 1];
-        cache[0] = 0;
-        result[0] = cache[0];
-
-        int upper = 1;
-        int lower_mask = 0;
+        vector<int> result(num + 1, 0);
 
         for (int i = 1; i <= num; i++){
-            if (i > upper){
-                upper <<= 1;
-                lower_mask = (upper - 1) >> 1;
-            }
-            cache[i] = 1 + cache[i & lower_mask];
-            result[i] = cache[i];
+            if (i % 2 == 0) result[i] = result[i / 2];
+            else result[i] = result[i-1] + 1;
         }
 
         return result;
