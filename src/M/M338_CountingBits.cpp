@@ -8,10 +8,10 @@ using std::vector;
 class Solution {
 public:
     vector<int> countBits(int num) {
-        vector<int> result;
+        vector<int> result(num + 1);
         int cache[num + 1];
         cache[0] = 0;
-        result.push_back(cache[0]);
+        result[0] = cache[0];
 
         int upper = 1;
         int lower_mask = 0;
@@ -22,7 +22,7 @@ public:
                 lower_mask = (upper - 1) >> 1;
             }
             cache[i] = 1 + cache[i & lower_mask];
-            result.push_back(cache[i]);
+            result[i] = cache[i];
         }
 
         return result;
