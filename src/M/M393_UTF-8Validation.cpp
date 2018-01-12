@@ -11,14 +11,13 @@ public:
         int chars = 0;
         for(int d: data){
             if (chars == 0) {
-                if ((d & 0b11111000) == 0b11110000) chars = 3;
-                else if ((d & 0b11110000) == 0b11100000) chars = 2;
-                else if ((d & 0b11100000) == 0b11000000) chars = 1;
-                else if ((d & 0b10000000) == 0b00000000) chars = 0;
-                else return false;
+                if ((d >> 3) == 0b11110) chars = 3;
+                else if ((d >> 4) == 0b1110) chars = 2;
+                else if ((d >> 5) == 0b110) chars = 1;
+                else if ((d >> 7) == 1) return false;
             } else{
-                if ((d & 0b11000000) == 0b10000000) chars --;
-                else return false;
+                if ((d >> 6) != 0b10) return false;
+                chars --;
             }
         }
         return chars == 0;
