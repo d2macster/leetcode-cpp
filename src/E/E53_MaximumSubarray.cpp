@@ -12,9 +12,9 @@ public:
         if (L == 0) return 0;
         int result = nums[0];
         int ss = nums[0];
-        for (int i = 1; i < L; i++){
+        for (int i = 1; i < L; i++) {
             ss += nums[i];
-            ss = (nums[i] > ss)? nums[i] : ss;
+            ss = (nums[i] > ss) ? nums[i] : ss;
             result = (ss > result) ? ss : result;
         }
         return result;
