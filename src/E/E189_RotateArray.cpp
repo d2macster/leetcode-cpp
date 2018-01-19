@@ -3,18 +3,31 @@
 //
 #include <vector>
 #include <algorithm>
+
 using std::vector;
 using std::reverse;
 
 class Solution {
 public:
-    void rotate(vector<int>& nums, int k) {
+    void rotate(vector<int> &nums, int k) {
         int L = nums.size();
-        if (L <= 1 || k == 0) return;
+        if (L <= 1) return;
         k %= L;
-        std::reverse(nums.begin(), nums.end());
-        std::reverse(nums.begin(), nums.begin() + k);
-        std::reverse(nums.begin() + k, nums.end());
+        if (k == 0) return;
+        int count = 0;
+
+        for (int start = 0; count < L; start++) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % L;
+                int temp = nums[next];
+                nums[next] = prev;
+                prev = temp;
+                current = next;
+                count++;
+            } while (start != current);
+        }
 
     }
 };
