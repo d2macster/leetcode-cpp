@@ -7,16 +7,15 @@ using std::vector;
 class Solution {
 public:
     int findMaxConsecutiveOnes(vector<int>& nums) {
-        int L = nums.size();
-        if (L == 0) return 0;
-        int d = 0, begin = L;
-        for (int i = 0; i < L; i++){
-            if (nums[i] == 0) {
-                d = std::max(d, i - begin);
-                begin = L;
-            }else begin = std::min(begin, i);
+        int d = 0, counter = 0;
+        for (const int& n: nums){
+            if (n == 1) counter++;
+            else{
+                d = std::max(d, counter);
+                counter = 0;
+            }
         }
-        d = std::max(d, L - begin);
+        d = std::max(d, counter);
         return d;
     }
 };
