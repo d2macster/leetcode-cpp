@@ -9,7 +9,7 @@ public:
     int pivotIndex(vector<int>& nums) {
         int L = nums.size();
         if (L == 0) return -1;
-        
+
         int l = 0, r = 0;
         for (int i = 0; i < L; i++) r += nums[i];
         for (int i = 0; i < L; i++){
