@@ -7,10 +7,12 @@ using std::vector;
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        int counter[3] = {0, 0, 0};
-        for (const int n: nums) counter[n]++;
-        int id = 0;
-        for (int v = 0; v <= 2; v++)
-        for (int i = 0; i < counter[v]; i++)nums[id++] = v;
+        int L = nums.size();
+        int left = 0, right = L-1;
+        for (int i = 0; i <= right; i++){
+            if (nums[i] == 0) std::swap(nums[i], nums[left++]);
+            else if (nums[i] == 2) std::swap(nums[i--], nums[right--]);
+        }
+
     }
 };
