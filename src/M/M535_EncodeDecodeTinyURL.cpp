@@ -3,24 +3,41 @@
 //
 #include <string>
 #include <unordered_map>
+#include <cstdlib>
+#include <ctime>
+
 using std::string;
 using std::unordered_map;
+using std::rand;
+
 
 class Solution {
     unordered_map<string, string> forward, backwards;
-    long counter = 0;
+    const string alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 public:
+
+    Solution() {
+        srand(time(NULL));
+    }
 
     // Encodes a URL to a shortened URL.
     string encode(string longUrl) {
-        if (forward.find(longUrl) != forward.end()) return forward[longUrl];
-        else{
-            string tinyUrl = "http://tinyurl.com/" + counter;
-            counter++;
-            forward[longUrl] = tinyUrl;
-            backwards[tinyUrl] = longUrl;
-            return tinyUrl;
+        while (forward.find(longUrl) == forward.end()) {
+            string hash;
+            int id;
+            for (int i = 0; i < 10; i++) {
+                id = rand() % alphanum.size();
+                hash += alphanum[id];
+            }
+
+            string tinyUrl = "http://tinyurl.com/" + string(hash);
+            if (backwards.find(tinyUrl) == backwards.end()) {
+                forward[longUrl] = tinyUrl;
+                backwards[tinyUrl] = longUrl;
+            }
         }
+        return forward[longUrl];
     }
 
     // Decodes a shortened URL to its original URL.
