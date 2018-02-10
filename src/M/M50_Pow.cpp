@@ -15,7 +15,7 @@ public:
             p *= -1;
             x = 1.0 / x;
         }
-        
+
         double result = 1.0;
         double vv = x * x;
         map<long, double> cache;
