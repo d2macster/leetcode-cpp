@@ -12,17 +12,11 @@ struct TreeNode {
 };
 
 class Solution {
-    int dfs(TreeNode *n) {
-        if (!n->left && !n->right) return 1;
-        int ld = 999999, rd = 999999;
-        if (n->left != NULL) ld = 1 + dfs(n->left);
-        if (n->right != NULL) rd = 1 + dfs(n->right);
-        return std::min(ld, rd);
-    }
-
 public:
     int minDepth(TreeNode *root) {
         if (root == NULL) return 0;
-        return dfs(root);
+        if (root->left == NULL) return 1 + minDepth(root->right);
+        if (root->right == NULL) return 1 + minDepth(root->left);
+        return 1 + std::min(minDepth(root->left), minDepth(root->right));
     }
 };
