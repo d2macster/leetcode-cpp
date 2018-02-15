@@ -3,8 +3,11 @@
 //
 
 #include <vector>
+#include <unordered_map>
+#include <iostream>
 
 using std::vector;
+using std::unordered_map;
 
 struct TreeNode {
     int val;
@@ -15,23 +18,24 @@ struct TreeNode {
 };
 
 class Solution {
-    void dfs(TreeNode *n, int sum, vector<int> &path_sums, int level, int & counter){
-        if (!n) return;
-        if (path_sums.size() < level) path_sums.push_back(0);
 
-        for (int i = 0; i < level; i++) path_sums[i] += n->val;
-        for (int i = 0; i < level; i++) counter += (path_sums[i] == sum)? 1 : 0;
-        dfs(n->left, sum, path_sums, level + 1, counter);
-        dfs(n->right, sum, path_sums, level + 1, counter);
+    int dfs(TreeNode *n, int sum, unordered_map<int, int> &cache, int cur_sum) {
+        if (!n) return 0;
+        cur_sum += n->val;
+        int diff = cur_sum - sum;
 
-        for (int i = 0; i < level; i++) path_sums[i] -= n->val;
+        int counter = (cur_sum == sum) + (cache.count(diff) ? cache[diff] : 0);
+
+        cache[cur_sum]++;
+        counter += dfs(n->left, sum, cache, cur_sum);
+        counter += dfs(n->right, sum, cache, cur_sum);
+        cache[cur_sum]--;
+        return counter;
     }
 
 public:
     int pathSum(TreeNode *root, int sum) {
-        vector<int> path_sums;
-        int counter = 0;
-        dfs(root, sum, path_sums, 1, counter);
-        return counter;
+        unordered_map<int, int> cache;
+        return dfs(root, sum, cache, 0);
     }
 };
