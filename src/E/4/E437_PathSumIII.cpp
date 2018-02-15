@@ -15,20 +15,23 @@ struct TreeNode {
 };
 
 class Solution {
-    int dfs(TreeNode *n, int sum, vector<int> path_sums){
-        if (!n) return 0;
-        int counter = 0;
-        vector<int> n_sums = path_sums;
-        for (int i = 0; i < n_sums.size(); i++) n_sums[i] += n->val;
-        n_sums.push_back(n->val);
-        for (int s: n_sums) counter += (s == sum)? 1 : 0;
-        counter += dfs(n->left, sum, n_sums);
-        counter += dfs(n->right, sum, n_sums);
-        return counter;
+    void dfs(TreeNode *n, int sum, vector<int> &path_sums, int level, int & counter){
+        if (!n) return;
+        if (path_sums.size() < level) path_sums.push_back(0);
+
+        for (int i = 0; i < level; i++) path_sums[i] += n->val;
+        for (int i = 0; i < level; i++) counter += (path_sums[i] == sum)? 1 : 0;
+        dfs(n->left, sum, path_sums, level + 1, counter);
+        dfs(n->right, sum, path_sums, level + 1, counter);
+
+        for (int i = 0; i < level; i++) path_sums[i] -= n->val;
     }
 
 public:
     int pathSum(TreeNode *root, int sum) {
-        return dfs(root, sum, vector<int>());
+        vector<int> path_sums;
+        int counter = 0;
+        dfs(root, sum, path_sums, 1, counter);
+        return counter;
     }
 };
