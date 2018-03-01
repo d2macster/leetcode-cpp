@@ -2,8 +2,10 @@
 // Created by Andrii Cherniak on 3/1/18.
 //
 #include <vector>
+#include <stack>
 
 using std::vector;
+using std::stack;
 
 
 struct TreeNode {
@@ -15,17 +17,24 @@ struct TreeNode {
 };
 
 class Solution {
-    void helper(TreeNode *n, vector<int> &result){
-        if (!n)
-            return;
-        helper(n->left, result);
-        result.push_back(n->val);
-        helper(n->right, result);
-    }
 public:
     vector<int> inorderTraversal(TreeNode *root) {
         vector<int> result;
-        helper(root, result);
+        if (!root)
+            return result;
+        stack<TreeNode *> toVisit;
+        TreeNode * curNode = root;
+        while (curNode || !toVisit.empty()){
+            if (curNode){
+                toVisit.push(curNode);
+                curNode = curNode->left;
+            }else{
+                curNode = toVisit.top();
+                result.push_back(curNode->val);
+                toVisit.pop();
+                curNode = curNode->right;
+            }
+        }
         return result;
     }
 };
