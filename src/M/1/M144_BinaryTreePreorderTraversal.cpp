@@ -17,16 +17,22 @@ struct TreeNode {
 };
 
 class Solution {
-    void dfs(TreeNode * n, vector<int> & result){
-        if (!n) return;
-        result.push_back(n->val);
-        dfs(n->left, result);
-        dfs(n->right, result);
-    }
 public:
     vector<int> preorderTraversal(TreeNode *root) {
         vector<int> result;
-        dfs(root, result);
+        stack<TreeNode*> s;
+        TreeNode * current = root;
+        while (current || !s.empty()){
+            if (current){
+                result.push_back(current->val);
+                s.push(current);
+                current = current->left;
+            }else{
+                current = s.top();
+                s.pop();
+                current = current->right;
+            }
+        }
         return result;
     }
 };
