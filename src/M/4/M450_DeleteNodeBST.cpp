@@ -12,21 +12,32 @@ struct TreeNode {
 };
 
 class Solution {
+    TreeNode* findMinNode(TreeNode* root) {
+        if (root->left) return findMinNode(root->left);
+        return root;
+    }
 public:
     TreeNode *deleteNode(TreeNode *root, int key) {
         if (!root) return nullptr;
-        if (key == root->val){
+        if (key == root->val) {
             if (!root->right) {
-                TreeNode *left = root->left;
+                TreeNode * left = root->left;
                 delete root;
                 return left;
+            }else if (!root->left){
+                TreeNode * right = root->right;
+                delete root;
+                return right;
+            } else{
+                TreeNode * successor = findMinNode(root->right);
+                root->val = successor->val;
+                root->right = deleteNode(root->right, successor->val);
             }
-            TreeNode * right = root->right;
-            while (right->left) right = right->left;
-            std::swap(root->val, right->val);
+        } else if (key < root->val) {
+            root->left = deleteNode(root->left, key);
+        } else {
+            root->right = deleteNode(root->right, key);
         }
-        root->left = deleteNode(root->left, key);
-        root->right = deleteNode(root->right, key);
         return root;
     }
 };
