@@ -8,8 +8,7 @@ using namespace std;
 class Solution {
     void helper(vector<int> &seq, vector<vector<int> > &combinations, int num, int n, int k) {
         if (k == 0) {
-            vector<int> seq_copy = seq;
-            combinations.push_back(seq_copy);
+            combinations.push_back(seq);
             return;
         }
         if (num > n) return;
