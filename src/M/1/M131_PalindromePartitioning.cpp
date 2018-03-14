@@ -15,13 +15,16 @@ class Solution {
         return true;
     }
 
-    void helper(string &s, int begin_id, vector<string> path, vector<vector<string> > &partitions) {
-        if (begin_id == s.length()) partitions.push_back(path);
+    void helper(string &s, int begin_id, vector<string> &path, int path_id, vector<vector<string> > &partitions) {
+        if (begin_id == s.length()) {
+            vector<string> path_copy;
+            for (int i = 0; i < path_id; i++) path_copy.push_back(path[i]);
+            partitions.push_back(path_copy);
+        }
         for (int end_id = begin_id; end_id < s.length(); end_id++) {
             if (isPalindrome(s, begin_id, end_id)) {
-                vector<string> path_copy = path;
-                path_copy.push_back(s.substr(begin_id, end_id - begin_id + 1));
-                helper(s, end_id + 1, path_copy, partitions);
+                path[path_id] = s.substr(begin_id, end_id - begin_id + 1);
+                helper(s, end_id + 1, path, path_id + 1, partitions);
             }
         }
     }
@@ -32,8 +35,8 @@ public:
         if (s == "")
             return partitions;
         int L = s.length();
-        vector<string> path;
-        helper(s, 0, path, partitions);
+        vector<string> path = vector<string>(L, "");
+        helper(s, 0, path, 0, partitions);
         return partitions;
     }
 };
