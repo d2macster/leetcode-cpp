@@ -30,12 +30,14 @@ public:
             rows[row_id-1].push_back(s[i]);
         }
 
-
-        string result = "";
+        vector<char> result = vector<char >(L);
+        int r_id = 0;
         for (int row = 1; row <= numRows; row++) {
-            for (char ch: rows[row - 1]) result = result + ch;
+            for (char ch: rows[row - 1]) {
+                result[r_id++] = ch;
+            }
         }
 
-        return result;
+        return string(result.begin(), result.end());
     }
 };
