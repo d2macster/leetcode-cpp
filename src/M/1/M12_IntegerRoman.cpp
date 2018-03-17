@@ -7,51 +7,28 @@
 using namespace std;
 
 class Solution {
-    map<int, string> roman;
-
-    string converter(int n) {
-        if (n <= 0)
-            return "";
-        map<int, string>::iterator ge = roman.lower_bound(n);
-
-        if (ge == roman.end()) {
-            ge--;
-            return ge->second + converter(n - ge->first);
-        }
-        if (n == ge->first) return ge->second;
-        else {
-            if (ge == roman.begin()) return ge->second + converter(n - ge->first);
-            for (auto it = roman.begin(); it != ge; it++) {
-                if (ge->first - it->first == n) return it->second + ge->second;
-            }
-            ge--;
-            return ge->second + converter(n - ge->first);
-        }
-    }
 
 public:
     string intToRoman(int num) {
-        roman[1] = "I";
-        roman[5] = "V";
-        roman[10] = "X";
-        roman[50] = "L";
-        roman[100] = "C";
-        roman[500] = "D";
-        roman[1000] = "M";
+        vector<string> i_map = vector<string>();
+        for (string s: (string[]) {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"})
+            i_map.push_back(s);
 
-        if (num < 1)
-            return "";
+        vector<string> x_map = vector<string>();
+        for (string s: (string[]) {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"})
+            x_map.push_back(s);
 
-        string ns = to_string(num);
-        int power = 1;
-        string romanSTR = "";
-        for (int i = ns.size() - 1; i >= 0; i--) {
-            int v = (ns.at(i) - '0') * power;
-            if (v) romanSTR = converter(v) + romanSTR;
-            power *= 10;
-        }
+        vector<string> c_map = vector<string>();
+        for (string s: (string[]) {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"})
+            c_map.push_back(s);
 
-        return romanSTR;
+        vector<string> m_map = vector<string>();
+        for (string s: (string[]) {"", "M", "MM", "MMM", "MMMM"})
+            m_map.push_back(s);
+
+
+        if (num < 1 || num > 4999) return "";
+        return m_map[num / 1000] + c_map[(num % 1000) / 100] + x_map[(num % 100) / 10] + i_map[num % 10];
 
     }
 };
