@@ -1,12 +1,12 @@
 //
 // Created by Andrii Cherniak on 3/19/18.
 //
-#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
 class Node {
-    unordered_map<char, Node *> links;
+    vector<Node *> links = vector<Node *>(26, nullptr);
     char c;
     bool exists = false;
 
@@ -32,10 +32,10 @@ public:
             return;
         Node *n = root;
         for (char ch : word) {
-            if (n->links.find(ch) != n->links.end()) n = n->links[ch];
+            if (n->links[ch - 'a'] != nullptr) n = n->links[ch - 'a'];
             else {
                 Node *nn = new Node(ch);
-                n->links[ch] = nn;
+                n->links[ch - 'a'] = nn;
                 n = nn;
             }
         }
@@ -47,8 +47,8 @@ public:
         if (word == "") return false;
         Node *n = root;
         for (char ch : word) {
-            if (n->links.find(ch) == n->links.end()) return false;
-            n = n->links[ch];
+            n = n->links[ch - 'a'];
+            if (n == nullptr) return false;
         }
         return n->exists;
     }
@@ -58,9 +58,11 @@ public:
         if (prefix == "") return false;
         Node *n = root;
         for (char ch: prefix) {
-            if (n->links.find(ch) == n->links.end()) return false;
-            n = n->links[ch];
+            n = n->links[ch - 'a'];
+            if (n == nullptr) return false;
         }
-        return n->exists || !n->links.empty();
+        for (Node *next: n->links)
+            if (next != nullptr) return true;
+        return n->exists;
     }
 };
