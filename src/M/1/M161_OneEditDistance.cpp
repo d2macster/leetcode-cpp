@@ -23,7 +23,7 @@ public:
                 break;
             }
         }
-        
+
         return ((!mismatch && Ls == Lt + 1) || (mismatch && s == t));
     }
 };
