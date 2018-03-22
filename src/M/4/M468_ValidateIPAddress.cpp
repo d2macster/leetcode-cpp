@@ -53,7 +53,7 @@ public:
         if (s == "")
             return "Neither";
         ip_data.push_back(s);
-        
+
         if (!ipv4 && !ipv6) return "Neither";
         if (ipv4 && ipv6) return "Neither";
         if (ipv4 && check_ipv4(ip_data)) return "IPv4";
