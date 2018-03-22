@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -13,9 +14,9 @@ public:
     // Encodes a list of strings to a single string.
     string encode(vector<string> &strs) {
         ostringstream out;
-        out << strs.size();
-        for (string &s: strs) out << ':' << s.size();
-        for (string &s: strs) out << ':' << s;
+        out << setw(5) << strs.size();
+        for (string &s: strs) out << setw(5) << s.size();
+        for (string &s: strs) out << s;
         return out.str();
     }
 
@@ -24,27 +25,15 @@ public:
         vector<string> result;
         vector<int> sl;
         int L = s.size();
-        int i = 0;
-        int N = 0;
-        while (i < L && s[i] != ':') {
-            N = N * 10 + (s[i] - '0');
-            i++;
-        }
-        i++;
-        for (int j = 1; j <= N; j++) {
-            int l = 0;
-            while (i < L && s[i] != ':') {
-                l = l * 10 + (s[i] - '0');
-                i++;
-            }
+        int N = stoi(s.substr(0, 5));
+        for (int i = 1; i <= N; i++){
+            int l = stoi(s.substr(5*i, 5));
             sl.push_back(l);
-            i++;
         }
-        for (int j = 1; j <= N; j++) {
-            string ss = "";
-            for (int k = 1; k <= sl[j-1]; k++) ss += s[i++];
-            result.push_back(ss);
-            i++;
+        int shift = 5*(N+1);
+        for (int i = 0; i < N; i++){
+            result.push_back(s.substr(shift, sl[i]));
+            shift += sl[i];
         }
         return result;
     }
