@@ -33,7 +33,7 @@ public:
                     (i == 0 && strs[0] != strs[1]) ||
                             (i == L-1 && strs[i] != strs[i - 1]) ||
                             (strs[i] != strs[i-1] && strs[i] != strs[i+1])){
-                
+
                 int j = i + 1;
                 bool is_substring = false;
                 while (!is_substring && j < L) {
