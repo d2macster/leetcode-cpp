@@ -20,11 +20,12 @@ public:
         unordered_map<int, priority_queue<int, vector<int>, comparator> > sequence;
         for (int n: nums) {
 
-            if (sequence[n - 1].size() == 0) {
+            if (sequence.find(n-1) == sequence.end()) {
                 sequence[n].push(1);
             } else {
                 int ssize = sequence[n - 1].top();
                 sequence[n - 1].pop();
+                if (sequence[n - 1].empty()) sequence.erase(n-1);
                 sequence[n].push(ssize + 1);
             }
         }
