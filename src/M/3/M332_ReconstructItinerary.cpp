@@ -4,20 +4,19 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <queue>
+#include <multiset>
 
 using namespace std;
 
 class Solution {
-    unordered_map<string, priority_queue<string, vector<string>, greater<string> > > flights;
+    unordered_map<string, multiset<string> > flights;
     vector<string> itinerary;
 
-    void helper(string airport) {
-        auto &q = flights[airport];
-        while (!q.empty()) {
-            string next = q.top();
-            q.pop();
-            helper(next);
+    void explore(string airport){
+        while (flights[airport].size()){
+            string next = *flights[airport].begin();
+            flights[airport].erase(flights[airport].begin());
+            explore(next);
         }
         itinerary.push_back(airport);
     }
@@ -25,9 +24,9 @@ class Solution {
 public:
     vector<string> findItinerary(vector<pair<string, string> > tickets) {
         for (pair<string, string> &t: tickets)
-            flights[t.first].push(t.second);
+            flights[t.first].insert(t.second);
 
-        helper("JFK");
+        explore("JFK");
         reverse(itinerary.begin(), itinerary.end());
         return itinerary;
     }
