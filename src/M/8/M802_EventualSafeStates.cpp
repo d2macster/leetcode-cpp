@@ -27,7 +27,7 @@ public:
             safeCounter++;
         }
         if (!safeCounter) return safeNodes;
-        
+
         vector<bool> visited = vector<bool>(V, false);
         for (int i = 0; i < V; i++){
             if (!visited[i]) safeDFS(graph, i, visited, is_terminal);
