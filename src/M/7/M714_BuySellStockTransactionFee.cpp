@@ -13,12 +13,11 @@ public:
             return 0;
         int cash = 0;
         int stock = -prices[0];
-        int next_cash, next_stock;
+        int next_cash;
         for (int i = 1; i < L; i++){
             next_cash = max(cash, prices[i] + stock - fee);
-            next_stock = max(stock, cash - prices[i]);
+            stock = max(stock, cash - prices[i]);
             cash = next_cash;
-            stock = next_stock;
         }
         return cash;
     }
