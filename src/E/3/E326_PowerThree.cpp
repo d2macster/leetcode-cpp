@@ -5,10 +5,8 @@
 class Solution {
 public:
     bool isPowerOfThree(int n) {
-        while (n > 1){
-            if (n % 3 != 0) return false;
-            n /= 3;
-        }
-        return (n == 1);
+        int maxPower = 1162261467; // 3^19
+        if (n < 1 || n> maxPower) return false;
+        return maxPower % n == 0;
     }
 };
