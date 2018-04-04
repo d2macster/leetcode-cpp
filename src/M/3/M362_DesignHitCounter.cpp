@@ -2,7 +2,6 @@
 // Created by Andrii Cherniak on 4/3/18.
 //
 #include <map>
-#include <iostream>
 
 using namespace std;
 
@@ -16,7 +15,6 @@ public:
 
     void clear(int timestamp) {
         int cutoff = timestamp - 300;
-        cout << "first " << counter.begin()->first << " cutoff " << cutoff << endl;
         while (!counter.empty() && counter.begin()->first <= cutoff) counter.erase(counter.begin());
     }
 
