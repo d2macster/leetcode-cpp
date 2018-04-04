@@ -1,12 +1,13 @@
 //
 // Created by Andrii Cherniak on 4/3/18.
 //
-#include <queue>
+#include <map>
 #include <iostream>
+
 using namespace std;
 
 class HitCounter {
-    queue<int> q;
+    map<int, int> counter;
 public:
     /** Initialize your data structure here. */
     HitCounter() {
@@ -15,26 +16,26 @@ public:
 
     void clear(int timestamp) {
         int cutoff = timestamp - 300;
-        cout << "front " << q.front() << " cutoff " << cutoff << endl;
-        while (!q.empty() && q.front() <= cutoff) {
-            q.pop();
-            cout << "front " << q.front() << " cutoff " << cutoff << endl;
-        }
-
+        cout << "first " << counter.begin()->first << " cutoff " << cutoff << endl;
+        while (!counter.empty() && counter.begin()->first <= cutoff) counter.erase(counter.begin());
     }
 
     /** Record a hit.
         @param timestamp - The current timestamp (in seconds granularity). */
     void hit(int timestamp) {
-        q.push(timestamp);
         clear(timestamp);
-
+        counter[timestamp]++;
     }
 
     /** Return the number of hits in the past 5 minutes.
         @param timestamp - The current timestamp (in seconds granularity). */
     int getHits(int timestamp) {
         clear(timestamp);
-        return q.size();
+        int sum = 0;
+        for (int ts = timestamp - 300; ts <= timestamp; ts++) {
+            if (counter.find(ts) != counter.end())
+            sum += counter[ts];
+        }
+        return sum;
     }
 };
