@@ -29,7 +29,7 @@ public:
             counter[key]++;
             grouped_keys[counter[key]].insert(key);
         }
-        
+
     }
 
     /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
