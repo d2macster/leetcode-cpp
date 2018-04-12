@@ -12,28 +12,28 @@ struct ListNode {
 };
 
 class Solution {
-    int L = 0;
     ListNode * list_head = NULL;
 public:
     /** @param head The linked list's head.
         Note that the head is guaranteed to be not null, so it contains at least one node. */
     Solution(ListNode *head) {
         list_head = head;
-        while (head != NULL){
-            head = head->next;
-            L++;
-        }
     }
 
     /** Returns a random node's value. */
     int getRandom() {
-        int node_id = rand() % L;
-        int id = 0;
+        int L = 0;
         ListNode * head = list_head;
-        while (id < node_id && head != NULL) {
+        ListNode * n = NULL;
+
+        while (head != NULL){
+            L++;
+            double p_list = 1.0/L;
+            double p = 1.0*rand()/RAND_MAX;
+            if (p <= p_list) n = head;
             head = head->next;
-            id++;
         }
-        return head->val;
+
+        return (n == NULL)?list_head->val:n->val;
     }
 };
