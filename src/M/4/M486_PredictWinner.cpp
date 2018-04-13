@@ -5,16 +5,21 @@
 using namespace std;
 
 class Solution {
-    int score(vector<int>& nums, int left, int right, int turn){
-        if (left == right) return turn*nums[left];
-        int s1 = turn * nums[left] + score(nums, left+1, right, -turn);
-        int s2 = turn * nums[right] + score(nums, left, right-1, -turn);
-        return (turn > 0)?max(s1, s2):min(s1, s2);
-    }
 public:
     bool PredictTheWinner(vector<int>& nums) {
         int L = nums.size();
         if (L <= 2) return true;
-        return (score(nums, 0, L-1, 1) >=0);
+        vector<vector<int>> dp = vector<vector<int >>(L, vector<int>(L, 0));
+
+        for (int left = 0; left < L; left++) dp[left][left] = nums[left];
+
+        for (int d = 1; d < L; d++){
+            for (int left = 0; left < (L - d); left++){
+                int right = left+d;
+                dp[left][right] = max(nums[left]-dp[left+1][right], nums[right]-dp[left][right-1]);
+            }
+        }
+
+        return dp[0][L-1] >= 0;
     }
 };
