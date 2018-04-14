@@ -1,35 +1,12 @@
 //
 // Created by Andrii Cherniak on 4/13/18.
 //
-#include <set>
-#include <unordered_map>
+#include <map>
 
 using namespace std;
 
 class MyCalendarTwo {
-    set<int> event_list;
-    unordered_map<int, int> start_counter, end_counter;
-
-    bool add_interval(int start, int end) {
-        start_counter[start]++;
-        end_counter[end]++;
-        event_list.insert(start);
-        event_list.insert(end);
-        int overlap = 0;
-
-        for (auto e: event_list) {
-            overlap += start_counter[e];
-            overlap -= end_counter[e];
-            if (overlap > 2) return false;
-        }
-
-        return true;
-    }
-
-    void remove_interval(int start, int end) {
-        start_counter[start]--;
-        end_counter[end]--;
-    }
+    map<int, int> events;
 
 public:
     MyCalendarTwo() {
@@ -37,10 +14,19 @@ public:
     }
 
     bool book(int start, int end) {
-        if (add_interval(start, end)) return true;
-        else{
-            remove_interval(start, end);
-            return false;
+        events[start]++;
+        events[end]--;
+        int overlap = 0;
+        for (auto &e: events){
+            overlap += e.second;
+            if (overlap >= 3) {
+                events[start]--;
+                if (events[start] == 0) events.erase(start);
+                events[end]++;
+                if (events[end] == 0) events.erase(end);
+                return false;
+            }
         }
+        return true;
     }
 };
