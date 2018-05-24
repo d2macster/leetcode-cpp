@@ -3,33 +3,36 @@
 //
 #include <string>
 #include <vector>
-#include <set>
-#include <map>
 
 using namespace std;
 
 class Solution {
 public:
     int numMatchingSubseq(string S, vector<string> &words) {
+        vector<vector<string>> groups = vector<vector<string>>(26, vector<string>());
+        int id, Lw;
+        char c;
+        for(string w: words){
+            id = w[0] - 'a';
+            groups[id].push_back(w);
+        }
         int L = S.size();
-        map<char, set<int>> char_pos;
-        for (int i = 0; i < L; i++) {
-            char_pos[S[i]].insert(i);
+
+        for (int i = 0; i < L; i++){
+            id = S[i] - 'a';
+            vector<string> g_w = groups[id];
+            groups[id].clear();
+            for (string w: g_w){
+                Lw = w.size();
+                if (Lw > 1){
+                    string next_w = w.substr(1);
+                    id = next_w[0] - 'a';
+                    groups[id].push_back(next_w);
+                }
+            }
         }
         int cnt = 0;
-        set<int>::iterator it;
-        for (string w: words) {
-            int i = 0;
-            int pos = -1;
-            for (; i < w.size(); i++) {
-                char c = w[i];
-                if (char_pos.find(c) == char_pos.end()) break;
-                it = char_pos[c].upper_bound(pos);
-                if (it == char_pos[c].end()) break;
-                pos = *it;
-            }
-            if (i == w.size()) cnt++;
-        }
-        return cnt;
+        for (int i = 0; i < 26; i++) cnt += groups[i].size();
+        return words.size() - cnt;
     }
 };
