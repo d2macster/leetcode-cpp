@@ -3,22 +3,21 @@
 //
 #include <vector>
 #include <string>
-#include <stack>
 #include <unordered_set>
 
 using namespace std;
 
 class Solution {
     bool isValid(string &s) {
-        stack<char> sc;
-        for (char c: s) {
-            if (c == '(') sc.push(c);
-            else if (c == ')') {
-                if (!sc.empty() && sc.top() == '(') sc.pop();
-                else sc.push(c);
+        int check = 0;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') check++;
+            else if (s[i] == ')') {
+                check--;
+                if (check < 0) return false;
             }
         }
-        return sc.empty();
+        return (check == 0);
     }
 
     void removeK(string &s, int pos, int k, unordered_set<string> &result) {
