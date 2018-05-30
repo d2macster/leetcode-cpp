@@ -7,22 +7,34 @@
 using namespace std;
 
 class Solution {
+    bool canSplit(vector<int> &nums, int m, long cap) {
+        long s = 0;
+        int counter = 1;
+        int L = nums.size();
+        for (int i = 0; i < L; i++) {
+            if (s + nums[i] <= cap) s += nums[i];
+            else {
+                counter++;
+                s = nums[i];
+            }
+            if (counter > m) return false;
+        }
+        return true;
+    }
+
 public:
     int splitArray(vector<int> &nums, int m) {
-        int n = nums.size();
-        if (n < m)
-            return 0;
-        vector<vector<long>> dp = vector<vector<long>>(n + 1, vector<long>(m + 1, INT_MAX));
-        vector<long> cumSum = vector<long>(n + 1, 0);
-        for (int i = 0; i < n; i++) cumSum[i + 1] = cumSum[i] + nums[i];
-        for (int i = 1; i <= n; i++) dp[i][1] = cumSum[i];
-        dp[0][0] = 0;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                for (int k = 0; k <= i; k++) dp[i][j] = min(dp[i][j], max(dp[k][j - 1], cumSum[i] - cumSum[k]));
-            }
-        }
+        long lower = 0, upper = 0, med;
+        for(int n: nums) lower = max(lower, long(n));
+        if (nums.size() <= m) return lower;
 
-        return (int) dp[n][m];
+        for (int n: nums) upper += n;
+        while (upper - lower >= 4) {
+            med = lower + (upper - lower) / 2;
+            if (canSplit(nums, m, med)) upper = med;
+            else lower = med + 1;
+        }
+        for (long c = lower; c <= upper; c++) if (canSplit(nums, m, c)) return c;
+        return 0;
     }
 };
