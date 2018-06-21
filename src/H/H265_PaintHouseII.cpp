@@ -13,7 +13,7 @@ public:
         int k = costs[0].size();
         if (k == 1)
             return costs[0][0];
-        
+
         vector<int> prev_cost = vector<int>(k, 0);
         vector<int> next_cost = vector<int>(k, 0);
 
